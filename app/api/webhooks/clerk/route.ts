@@ -61,6 +61,7 @@ export async function POST(req: Request) {
   const eventType = evt.type;
 
   console.log(`Webhook event type: ${eventType}`);
+  console.log(`Webhook event ID: ${id}`);
 
   // CREATE
   if (eventType === "user.created") {
@@ -74,6 +75,8 @@ export async function POST(req: Request) {
       lastName: last_name || '',
       photo: image_url,
     };
+
+    console.log("Creating user with data:", user);
 
     const newUser = await createUser(user);
 
@@ -100,6 +103,9 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
+    console.log("Updating user with ID:", id);
+    console.log("New user data:", user);
+
     const updatedUser = await updateUser(id, user);
 
     return NextResponse.json({ message: "OK", user: updatedUser });
@@ -109,13 +115,21 @@ export async function POST(req: Request) {
   if (eventType === "user.deleted") {
     const { id } = evt.data;
 
+    console.log("Deleting user with ID:", id);
+
     const deletedUser = await deleteUser(id!);
 
     return NextResponse.json({ message: "OK", user: deletedUser });
   }
 
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
+  console.log(`Unhandled webhook event type: ${eventType} with ID: ${id}`);
   console.log("Webhook body:", body);
 
   return new Response("", { status: 200 });
 }
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
