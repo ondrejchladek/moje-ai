@@ -13,7 +13,7 @@ const IBMPlex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Moje AI",
+  title: "MojeAI",
   description: "Nejlepší český AI asistent a sada nástrojů pro práci s daty, texty, obrázky, zvukem a videem.",
 };
 
